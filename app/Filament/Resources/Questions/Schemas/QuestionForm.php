@@ -6,8 +6,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Get;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
 
 class QuestionForm
 {
@@ -24,11 +24,22 @@ class QuestionForm
                     ->required()
                     ->placeholder('Tambah opsi')
                     ->suggestions([])
+                    ->live()
                     ->helperText('Urutkan sesuai pilihan A, B, C ...'),
                 Select::make('correct_answer')
                     ->label('Jawaban benar')
-                    ->options(fn (Get $get) => collect($get('options') ?? [])
-                        ->mapWithKeys(fn ($option, $index) => [$index => $option]))
+                    ->reactive()
+                    ->options(function (Get $get): array {
+                        $options = $get('options');
+
+                        if (! is_array($options)) {
+                            return [];
+                        }
+
+                        return collect($options)
+                            ->mapWithKeys(fn ($option, $index) => [(string) $index => $option])
+                            ->all();
+                    })
                     ->required(),
                 Select::make('category')
                     ->options([

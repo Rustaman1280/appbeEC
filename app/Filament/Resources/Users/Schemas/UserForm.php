@@ -32,7 +32,7 @@ class UserForm
                 Select::make('role')
                     ->options([
                         'admin' => 'Admin',
-                        'staff' => 'Staff',
+                        'pengurus' => 'Pengurus',
                         'member' => 'Member',
                     ])
                     ->required()

@@ -56,6 +56,16 @@ class AttendanceController extends Controller
                 if ($user) {
                     $user->increment('xp', $xp);
                     $user->increment('total_xp', $xp);
+
+                    DB::table('xp_transactions')->insert([
+                        'user_id' => $user->id,
+                        'source' => 'attendance',
+                        'reference_id' => $attendance->id,
+                        'amount' => $xp,
+                        'description' => 'Attendance on ' . $data['date'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
                 }
             }
 

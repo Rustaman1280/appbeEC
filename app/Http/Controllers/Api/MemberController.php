@@ -13,7 +13,7 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $members = User::whereIn('role', ['member', 'staff'])->orderByDesc('created_at')->paginate(25);
+        $members = User::whereIn('role', ['member', 'pengurus'])->orderByDesc('created_at')->paginate(25);
 
         return UserResource::collection($members);
     }
@@ -25,7 +25,7 @@ class MemberController extends Controller
             'username' => ['required', 'string', 'max:100', 'unique:users,username'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
-            'role' => ['required', 'in:member,staff,admin'],
+            'role' => ['required', 'in:member,pengurus,admin'],
             'avatar' => ['nullable', 'string'],
         ]);
 
